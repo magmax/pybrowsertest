@@ -5,7 +5,10 @@ from ConfigParser import ConfigParser
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 
-__all__ = ['BrowserTestCase']
+__all__ = [
+    'BrowserTestCase',
+    'avoidInBrowsers', 'unlessInBrowsers',
+    ]
 
 
 def featuredAddFailure(original):
@@ -37,6 +40,9 @@ class BrowserConfiguration(object):
         self._config.set(self.SECTION_DESIRED, self.OPTION_BROWSER_NAME, 'firefox')
         self._config.set(self.SECTION_DESIRED, self.OPTION_JAVASCRIPT, 'true')
 
+    def loadDefaultFiles(self):
+        self.load(['/etc/browsertests.cfg', '.browsertests.cfg', 'browsertests.cfg'])
+
     def load(self, filelist):
         for filename in filelist:
             if os.path.exists(filename):
@@ -55,11 +61,14 @@ class BrowserConfiguration(object):
         return self._config.get(self.SECTION_GLOBAL, self.OPTION_SCREENSHOT_PATTERN)
 
     @property
+    def browser_name(self):
+        return self._config.get(self.SECTION_DESIRED, self.OPTION_BROWSER_NAME)
+
+    @property
     def desired_capabilities(self):
         desired = {}
         for option in self._config.options(self.SECTION_DESIRED):
             desired[option] = self._config.get(self.SECTION_DESIRED, option)
-        print desired
         return desired
 
 
@@ -69,7 +78,7 @@ class BrowserTestCase(unittest.TestCase):
 
         self._drivers = []
         self._config = BrowserConfiguration()
-        self._config.load(['/etc/browsertests.cfg', '.browsertests.cfg', 'browsertests.cfg'])
+        self._config.loadDefaultFiles()
 
     def run(self, result=None):
         if result is None:
@@ -81,9 +90,12 @@ class BrowserTestCase(unittest.TestCase):
         return unittest.TestCase.run(self, result)
 
     def save_screenshot(self):
-        if len(self._drivers) != 0:
-            filename = self._config.screenshot_file_pattern.format(testname=self.id(), timestamp=time.time())
-            self._drivers[0].save_screenshot(filename)
+        try:
+            if len(self._drivers) != 0:
+                filename = self._config.screenshot_file_pattern.format(testname=self.id(), timestamp=time.time())
+                self._drivers[0].save_screenshot(filename)
+        except Exception as e:
+            print "BROWSER_FRAMEWORK EXCEPTION: ", e.message
 
     def getBrowser(self, url=''):
         if len(self._drivers) == 0:
@@ -101,3 +113,18 @@ class BrowserTestCase(unittest.TestCase):
         self.addCleanup(close, driver)
         return driver
 
+def avoidInBrowsers(browserNames):
+    if not isinstance(browserNames, list):
+        browserNames = [browserNames]
+    config = BrowserConfiguration()
+    config.loadDefaultFiles()
+    message = 'The test has been skipped for browser {}'
+    return unittest.skipIf(config.browser_name in browserNames, message.format(browserNames))
+
+def unlessInBrowsers(browserNames):
+    if not isinstance(browserNames, list):
+        browserNames = [browserNames]
+    config = BrowserConfiguration()
+    config.loadDefaultFiles()
+    message = 'Current browser {} does not match any required browser for this test: {}'
+    return unittest.skipIf(config.browser_name not in browserNames, message.format(config.browser_name, browserNames))

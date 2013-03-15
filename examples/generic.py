@@ -8,7 +8,7 @@
 # It has a failing test, a skipped one and two right tests
 
 import unittest
-from pybrowsertest import BrowserTestCase
+from pybrowsertest import *
 
 class AutomationTest(BrowserTestCase):
     def test_the_title_is_set(self):
@@ -24,7 +24,21 @@ class AutomationTest(BrowserTestCase):
         browser = self.getBrowser()
         self.assertEquals("This test should fail", browser.title)
 
+
+class SkippingTest(BrowserTestCase):
     @unittest.skip("This test should not be executed ever")
     def test_skipped_test(self):
         browser = self.getBrowser()
+        self.fail("This test should not be executed")
+
+    @unlessInBrowsers("firefox")
+    def test_this_test_should_be_executed_in_firefox(self):
+        pass
+
+    @unlessInBrowsers("invalid browser")
+    def test_this_test_should_not_be_executed(self):
+        self.fail("This test should not be executed")
+
+    @avoidInBrowsers("firefox")
+    def test_this_test_should_not_be_executed_too(self):
         self.fail("This test should not be executed")

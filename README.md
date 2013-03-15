@@ -40,6 +40,16 @@ What makes this small framework so special?
 - It do not overwrite the methods `setUp` or `tearDown`, so it is safe for your current tests.
 - It uses a new browser instance for each test. This is slow, but is the safer way to ensure you have a clean environment (no cookies, sessions or whatever).
 - It reads the configuration from a file, what allows you to modify the file and run the tests again with another browser.
+- It provides some useful decorators to avoid tests in some browsers
+
+
+## Decorators ##
+
+Not all the browsers work in the same way, so there will be some tests that cannot be executed in some of them. Because of that, this framework provides some decorators to make the developer's life easier:
+
+### avoidInBrowsers ###
+### unlessInBrowsers ###
+
 
 ## Configuration ##
 
