@@ -133,10 +133,10 @@ class BrowserTestCase(unittest.TestCase):
         mode = self._config.selenium_mode
         if mode == 'remote':
             driver = webdriver.Remote(self._config.selenium_url, self._config.desired_capabilities)
-#         elif mode == 'firefox':
-#             driver = webdriver.Firefox()
-#         elif mode == 'chrome':
-#             driver = webdriver.Chrome()
+        elif mode == 'firefox':
+            driver = webdriver.Firefox()
+        elif mode == 'chrome':
+            driver = webdriver.Chrome()
         else:
             raise NotImplementedError('Selenium mode is not supported yet: ' + mode)
         driver.get(self._config.testing_url + url)

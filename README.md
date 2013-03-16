@@ -82,3 +82,26 @@ configure it. From the lowest priority to the highest:
 Files will have the tipical INI files format, with sections and keywords.
 
 Please, check the file [browsertest.cfg.template](https://github.com/magmax/pybrowsertest/blob/master/browsertest.cfg.template) for more information.
+
+
+## Contributing ##
+
+If you want to contribute, you should know how to run the tests. These are the steps after cloning the repository:
+
+    # You will need a Server running. You can use your own... or this:
+    make tests_server
+
+    # This command will download all what you need for you:
+    make tests
+
+Be careful: That command will let you to stop the selenium server and the local server.
+
+If you want to see a cleaner window, just start the selenium server and the local server in different windows or redirect its output to `/dev/null`.
+
+
+### Our own runner ###
+
+In order to test this framework, it has been necessary to build our own runner. It was necessary to catch the skipped tests, to check if they were really skipped; to catch the failed tests, to check if they were really failing, and so on. So you need to run the `./run_tests.py` script in order to test the own pybrowsertest library.
+
+Remember: the `./run_tests.py` script is not useful for your own tests; only in this library.
+
