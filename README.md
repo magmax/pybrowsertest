@@ -45,10 +45,29 @@ What makes this small framework so special?
 
 ## Decorators ##
 
-Not all the browsers work in the same way, so there will be some tests that cannot be executed in some of them. Because of that, this framework provides some decorators to make the developer's life easier:
+Not all the browsers work in the same way, so there will be some tests
+that cannot be executed in some of them. Because of that, this
+framework provides some decorators to make the developer's life
+easier:
 
 ### avoidInBrowsers ###
+
+This decorator will allow you to exclude the test only for some browsers.
+
+Example:
+
+    @avoidInBrowsers('chrome', 'firefox')
+    def test_example(self):
+        pass
+
 ### unlessInBrowsers ###
+
+The opposite to `avoidInBrowsers`, only will execute the test if you
+are using these browsers.
+
+    @unlessInBrowsers('chrome', 'firefox')
+    def test_example(self):
+        pass
 
 
 ## Configuration ##
@@ -61,49 +80,5 @@ configure it. From the lowest priority to the highest:
 - `pybrowsertest.cfg`
 
 Files will have the tipical INI files format, with sections and keywords.
-Lets study them:
 
-### Section global ###
-
-Example:
-
-    [global]
-    selenium_url = http://localhost:4444/wd/hub
-    testing_url = http://localhost
-    screenshot_file_pattern = error.{testname}.{timestamp}.png
-
-#### selenium_url ####
-
-**Default**: http://localhost:4444/wd/hub
-
-Url where selenium server is listening
-
-#### testing_url ####
-
-**Default**: http://localhost
-
-Url base to start tests. All requests will be made from with this url as base url.
-
-#### screenshot_file_pattern ####
-
-**Default**: error.{testname}.{timestamp}.png
-
-Pattern to store the screenshots. You can use some variables here, surrounded with brackets*****. The default value is an example. You can use the next values:
-
-- **testname**: Name of the current test
-- **timestamp**: seconds from Epoch. Decimals are the milliseconds.
-
-### Section desired capabilities ###
-
-Example:
-
-    [desired capabilities]
-    browserName = firefox
-    javascriptEnabled = True
-
-Here you can add whatever capabilities you desire. If they are
-available in the driver you choose, they will be used.
-
-There are some common capabilities, like "**browserName**" and
-"**javascriptEnabled**". Check the Selenium documentation to see all
-of them.
+Please, check the file browsertest.cfg.template for more information.

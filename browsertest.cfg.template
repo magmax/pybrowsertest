@@ -1,0 +1,49 @@
+## This file is an example and a template to configure the pybrowsertest
+## framework.
+
+## In order to use it, you should rename it to ".browsertests.cfg" or
+## "browsertests.cfg". The first one will not be shown with "ls", but the
+## second one has more priority. You can combine both of them.
+
+## You can use the file /etc/browsertests.cfg in order to set new default
+## values.
+
+
+[global]
+
+## Url base to start tests. All requests will be made from with this url as
+## base url.
+## Default value: http://localhost
+testing_url = http://localhost
+
+## Pattern to store the screenshots. You can use some variables here,
+## surrounded with curly brackets. The default value is an example.
+## You can use the next values:
+##   - testname: Name of the current test
+##   - timestamp: seconds from Epoch. Decimals are the milliseconds.
+## Default value: error.{testname}.{timestamp}.png
+screenshot_file_pattern = error.{testname}.{timestamp}.png
+
+## Selects the mode you are using selenium.
+## You can use it directly against the driver or use it as a server.
+## Values:
+##    remote: selenium is running as a server, listening at selenium_url
+selenium_mode = remote
+
+## Url where selenium server is listening. Only for selenium_mode=remote
+## Default value: http://localhost:4444/wd/hub
+selenium_url = http://localhost:4444/wd/hub
+
+[desired capabilities]
+## In this section you can add whatever capabilities you desire. If
+## they are available in the driver you choose, they will be used.
+
+## There are some common capabilities, like "browserName" and
+## "javascriptEnabled". Check the Selenium documentation to see all of
+## them.
+## Defaults:
+##   browserName = firefox
+##   javascriptEnabled = True
+browserName = firefox
+javascriptEnabled = True
+
