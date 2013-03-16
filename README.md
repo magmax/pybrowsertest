@@ -41,7 +41,7 @@ What makes this small framework so special?
 - It uses a new browser instance for each test. This is slow, but is the safer way to ensure you have a clean environment (no cookies, sessions or whatever).
 - It reads the configuration from a file, what allows you to modify the file and run the tests again with another browser.
 - It provides some useful decorators to avoid tests in some browsers
-
+- You can use your favourite runner: [unittest.main](http://docs.python.org/2/library/unittest.html#basic-example), [nosetests](https://nose.readthedocs.org/en/latest/), [zope.testrunner](https://pypi.python.org/pypi/zope.testrunner), [pytong](https://code.google.com/p/pytong/),... or even your own runner ([just like I had to do to test it](https://github.com/magmax/pybrowsertest/blob/master/run_tests.py))
 
 ## Decorators ##
 
@@ -81,4 +81,4 @@ configure it. From the lowest priority to the highest:
 
 Files will have the tipical INI files format, with sections and keywords.
 
-Please, check the file browsertest.cfg.template for more information.
+Please, check the file [browsertest.cfg.template](https://github.com/magmax/pybrowsertest/blob/master/browsertest.cfg.template) for more information.
