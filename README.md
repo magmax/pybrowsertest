@@ -50,22 +50,22 @@ that cannot be executed in some of them. Because of that, this
 framework provides some decorators to make the developer's life
 easier:
 
-### avoidInBrowsers ###
+### onlyIfBrowserIn ###
 
 This decorator will allow you to exclude the test only for some browsers.
 
 Example:
 
-    @avoidInBrowsers('chrome', 'firefox')
+    @onlyIfBrowserIn('chrome', 'firefox')
     def test_example(self):
         pass
 
-### unlessInBrowsers ###
+### onlyIfBrowserNotIn ###
 
-The opposite to `avoidInBrowsers`, only will execute the test if you
+The opposite to `onlyIfBrowserIn`, only will execute the test if you
 are using these browsers.
 
-    @unlessInBrowsers('chrome', 'firefox')
+    @onlyIfBrowserNotIn('chrome', 'firefox')
     def test_example(self):
         pass
 
