@@ -26,6 +26,7 @@ from selenium.common.exceptions import NoSuchElementException
 __all__ = [
     'BrowserTestCase',
     'avoidInBrowsers', 'unlessInBrowsers',
+    'onlyIfBrowserIn', 'onlyIfBrowserNotIn'
     ]
 
 
