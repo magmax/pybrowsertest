@@ -19,6 +19,8 @@
 import os
 import unittest
 import time
+from functools import partial
+
 from ConfigParser import ConfigParser
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
@@ -26,6 +28,7 @@ from selenium.common.exceptions import NoSuchElementException
 __all__ = [
     'BrowserTestCase',
     'avoidInBrowsers', 'unlessInBrowsers',
+    'onlyIfBrowserIn', 'onlyIfBrowserNotIn'
     ]
 
 
@@ -96,6 +99,32 @@ class BrowserConfiguration(object):
         return desired
 
 
+class DriverFactory(object):
+    @classmethod
+    def make(cls, config):
+        drivers = {
+            'remote': partial(webdriver.Remote,
+                              config.selenium_url,
+                              config.desired_capabilities),
+            'firefox': webdriver.Firefox,
+            'chrome': webdriver.Chrome
+            }
+
+        return drivers[config.selenium_mode]()
+
+
+class Browser(object):
+    def __init__(self, config):
+        self._config = config
+        self._driver = DriverFactory.make(config)
+
+    def open(self, url):
+        self.drivers.get(self._config.testing_url + url)
+
+    def close(self):
+        self.driver.close()
+
+
 class BrowserTestCase(unittest.TestCase):
     def __init__(self, *args, **kargs):
         unittest.TestCase.__init__(self, *args, **kargs)
@@ -120,6 +149,11 @@ class BrowserTestCase(unittest.TestCase):
                 self._drivers[0].save_screenshot(filename)
         except Exception as e:
             print "BROWSER_FRAMEWORK EXCEPTION: ", e.message
+
+    @property
+    def browser(self):
+        retval = Browser(self._config)
+        self.addCleanup(retval.close)
 
     def getBrowser(self, url=''):
         if len(self._drivers) == 0:
