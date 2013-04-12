@@ -40,3 +40,24 @@ class SkippingTest(BrowserTestCase):
     @onlyIfBrowserNotIn("firefox")
     def test_skipif_browser_is_firefox(self):
         pass
+
+class ReusableBrowserTest(BrowserTestCase):
+    """
+    This is an special class that requires interaction
+    between tests. The execution order is safe.
+    """
+    my_browser = None
+
+    def test_1(self):
+        new_browser = self.getReusableBrowser()
+        if self.my_browser:
+            self.assertEqual(new_browser, self.my_browser)
+        else:
+            self.my_browser = new_browser
+
+    def test_2(self):
+        new_browser = self.getReusableBrowser()
+        if self.my_browser:
+            self.assertEqual(new_browser, self.my_browser)
+        else:
+            self.my_browser = new_browser

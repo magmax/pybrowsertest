@@ -49,18 +49,26 @@ class BrowserConfiguration(object):
     OPTION_BROWSER_NAME = 'browserName'
     OPTION_JAVASCRIPT = 'javascriptEnabled'
 
+    default_selenium_url = 'http://localhost:4444/wd/hub'
+    default_selenium_mode = 'remote'
+    default_testing_url = 'http://localhost'
+    default_screenshot_pattern = 'error.{testname}.{timestamp}.png'
+
+    default_browser_name = 'firefox'
+    default_javascript = True
+
     def __init__(self):
         self._config = ConfigParser()
         self._config.optionxform = str
         self._config.add_section(self.SECTION_GLOBAL)
-        self._config.set(self.SECTION_GLOBAL, self.OPTION_SELENIUM_URL, 'http://localhost:4444/wd/hub')
-        self._config.set(self.SECTION_GLOBAL, self.OPTION_SELENIUM_MODE, 'remote')
-        self._config.set(self.SECTION_GLOBAL, self.OPTION_TESTING_URL, 'http://localhost')
-        self._config.set(self.SECTION_GLOBAL, self.OPTION_SCREENSHOT_PATTERN, 'error.{testname}.{timestamp}.png')
+        self._config.set(self.SECTION_GLOBAL, self.OPTION_SELENIUM_URL, self.default_selenium_url)
+        self._config.set(self.SECTION_GLOBAL, self.OPTION_SELENIUM_MODE, self.default_selenium_mode)
+        self._config.set(self.SECTION_GLOBAL, self.OPTION_TESTING_URL, self.default_testing_url)
+        self._config.set(self.SECTION_GLOBAL, self.OPTION_SCREENSHOT_PATTERN, self.default_selenium_mode)
 
         self._config.add_section(self.SECTION_DESIRED)
-        self._config.set(self.SECTION_DESIRED, self.OPTION_BROWSER_NAME, 'firefox')
-        self._config.set(self.SECTION_DESIRED, self.OPTION_JAVASCRIPT, 'true')
+        self._config.set(self.SECTION_DESIRED, self.OPTION_BROWSER_NAME, self.default_browser_name)
+        self._config.set(self.SECTION_DESIRED, self.OPTION_JAVASCRIPT, self.default_javascript)
 
     def loadDefaultFiles(self):
         self.load(['/etc/browsertest.cfg', '.browsertest.cfg', 'browsertest.cfg'])
@@ -125,12 +133,18 @@ class Browser(object):
 
 
 class BrowserTestCase(unittest.TestCase):
+    _config = BrowserConfiguration()
+    _config.loadDefaultFiles()
+    _reusableBrowser = None
+
     def __init__(self, *args, **kargs):
         unittest.TestCase.__init__(self, *args, **kargs)
 
         self._drivers = []
-        self._config = BrowserConfiguration()
-        self._config.loadDefaultFiles()
+
+    def __del__(self):
+        if self._reusableBrowser is not None:
+            self._reusableBrowser.close()
 
     def run(self, result=None):
         if result is None:
@@ -161,9 +175,24 @@ class BrowserTestCase(unittest.TestCase):
             self._drivers[0].get(self._config.testing_url + url)
         return self._drivers[0]
 
+    def getReusableBrowser(self):
+        if self._reusableBrowser is None:
+            self._reusableBrowser = self._getDriver()
+        return self._reusableBrowser
+
     def getAnotherBrowser(self, url=None):
         def close(driver):
             driver.close()
+        driver = self._getDriver()
+        self.addCleanup(close, driver)
+
+        if url is not None:
+            driver.get(self._config.testing_url + url)
+
+        self._drivers.append(driver)
+        return driver
+
+    def _getDriver(self):
         mode = self._config.selenium_mode
         if mode == 'remote':
             driver = webdriver.Remote(self._config.selenium_url, self._config.desired_capabilities)
@@ -173,12 +202,8 @@ class BrowserTestCase(unittest.TestCase):
             driver = webdriver.Chrome()
         else:
             raise NotImplementedError('Selenium mode is not supported yet: ' + mode)
-        if url is not None:
-            driver.get(self._config.testing_url + url)
-
-        self._drivers.append(driver)
-        self.addCleanup(close, driver)
         return driver
+
 
 def onlyIfBrowserIn(*browserNames):
     config = BrowserConfiguration()
