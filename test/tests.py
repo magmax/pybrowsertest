@@ -8,16 +8,16 @@ class AutomationTest(BrowserTestCase):
         pass
 
     def test_the_title_is_set(self):
-        browser = self.getBrowser()
+        browser = self.getBrowser('')
         self.assertEquals("Directory listing for /", browser.title)
 
     def test_there_are_links(self):
-        browser = self.getBrowser()
+        browser = self.getBrowser('')
         links = browser.find_elements_by_css_selector('a')
         self.assertTrue(len(links) > 0)
 
     def test_fail_test(self):
-        browser = self.getBrowser()
+        browser = self.getBrowser('')
         self.assertEquals("This test should fail", browser.title)
 
 

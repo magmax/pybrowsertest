@@ -12,7 +12,7 @@ tests_firefox:
 
 tests_chrome: chromedriver
 	@echo
-	@echo ==================== FIREFOX ====================
+	@echo ==================== CHROME ====================
 	PATH=${PATH}:. ./run_tests.py chrome
 
 tests_remote_firefox: ${SELENIUM_SERVER}

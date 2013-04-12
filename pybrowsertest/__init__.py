@@ -27,7 +27,6 @@ from selenium.common.exceptions import NoSuchElementException
 
 __all__ = [
     'BrowserTestCase',
-    'avoidInBrowsers', 'unlessInBrowsers',
     'onlyIfBrowserIn', 'onlyIfBrowserNotIn'
     ]
 
@@ -155,13 +154,14 @@ class BrowserTestCase(unittest.TestCase):
         retval = Browser(self._config)
         self.addCleanup(retval.close)
 
-    def getBrowser(self, url=''):
+    def getBrowser(self, url=None):
         if len(self._drivers) == 0:
             return self.getAnotherBrowser(url)
-        self._drivers[0].get(self._config.testing_url + url)
+        if url is not None:
+            self._drivers[0].get(self._config.testing_url + url)
         return self._drivers[0]
 
-    def getAnotherBrowser(self, url=''):
+    def getAnotherBrowser(self, url=None):
         def close(driver):
             driver.close()
         mode = self._config.selenium_mode
@@ -173,7 +173,8 @@ class BrowserTestCase(unittest.TestCase):
             driver = webdriver.Chrome()
         else:
             raise NotImplementedError('Selenium mode is not supported yet: ' + mode)
-        driver.get(self._config.testing_url + url)
+        if url is not None:
+            driver.get(self._config.testing_url + url)
 
         self._drivers.append(driver)
         self.addCleanup(close, driver)
@@ -184,11 +185,9 @@ def onlyIfBrowserIn(*browserNames):
     config.loadDefaultFiles()
     message = 'The test has been skipped for browser: {}'
     return unittest.skipIf(config.browser_name not in browserNames, message.format(browserNames))
-avoidInBrowsers = onlyIfBrowserIn
 
 def onlyIfBrowserNotIn(*browserNames):
     config = BrowserConfiguration()
     config.loadDefaultFiles()
     message = 'Current browser {} does not match any required browser for this test: {}'
     return unittest.skipIf(config.browser_name in browserNames, message.format(config.browser_name, browserNames))
-unlessInBrowsers = onlyIfBrowserNotIn
