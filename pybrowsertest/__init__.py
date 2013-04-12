@@ -183,12 +183,12 @@ def onlyIfBrowserIn(*browserNames):
     config = BrowserConfiguration()
     config.loadDefaultFiles()
     message = 'The test has been skipped for browser: {}'
-    return unittest.skipIf(config.browser_name in browserNames, message.format(browserNames))
+    return unittest.skipIf(config.browser_name not in browserNames, message.format(browserNames))
 avoidInBrowsers = onlyIfBrowserIn
 
 def onlyIfBrowserNotIn(*browserNames):
     config = BrowserConfiguration()
     config.loadDefaultFiles()
     message = 'Current browser {} does not match any required browser for this test: {}'
-    return unittest.skipIf(config.browser_name not in browserNames, message.format(config.browser_name, browserNames))
+    return unittest.skipIf(config.browser_name in browserNames, message.format(config.browser_name, browserNames))
 unlessInBrowsers = onlyIfBrowserNotIn
