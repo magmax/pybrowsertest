@@ -193,16 +193,7 @@ class BrowserTestCase(unittest.TestCase):
         return driver
 
     def _getDriver(self):
-        mode = self._config.selenium_mode
-        if mode == 'remote':
-            driver = webdriver.Remote(self._config.selenium_url, self._config.desired_capabilities)
-        elif mode == 'firefox':
-            driver = webdriver.Firefox()
-        elif mode == 'chrome':
-            driver = webdriver.Chrome()
-        else:
-            raise NotImplementedError('Selenium mode is not supported yet: ' + mode)
-        return driver
+        return DriverFactory.make(self._config)
 
 
 def onlyIfBrowserIn(*browserNames):
