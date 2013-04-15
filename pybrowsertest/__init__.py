@@ -120,31 +120,48 @@ class DriverFactory(object):
         return drivers[config.selenium_mode]()
 
 
+class Page(object):
+    def __init__(self, driver, url):
+        self._driver = driver
+        self._url = url
+
+    @property
+    def title(self):
+        return self._driver.title
+
+    def find_elements_by_css_selector(self, selector):
+        retval = self._driver.find_elements_by_css_selector(selector)
+        # FIXME: build here an array of Widgets
+        return retval
+
+
 class Browser(object):
     def __init__(self, config):
         self._config = config
+        self._driver = None
         self._driver = DriverFactory.make(config)
 
+    def __del__(self):
+        self.close()
+
     def open(self, url):
-        self.drivers.get(self._config.testing_url + url)
+        full_url = self._config.testing_url + url
+        self._driver.get(full_url)
+        return Page(self._driver, full_url)
 
     def close(self):
-        self.driver.close()
+        if self._driver:
+            self._driver.close()
+            self._driver = None
 
 
 class BrowserTestCase(unittest.TestCase):
     _config = BrowserConfiguration()
     _config.loadDefaultFiles()
-    _reusableBrowser = None
+    _browsers = []
 
     def __init__(self, *args, **kargs):
         unittest.TestCase.__init__(self, *args, **kargs)
-
-        self._drivers = []
-
-    def __del__(self):
-        if self._reusableBrowser is not None:
-            self._reusableBrowser.close()
 
     def run(self, result=None):
         if result is None:
@@ -157,9 +174,10 @@ class BrowserTestCase(unittest.TestCase):
 
     def saveScreenshot(self):
         try:
-            if len(self._drivers) != 0 and hasattr(self._drivers[0], 'save_screenshot'):
-                filename = self._config.screenshot_file_pattern.format(testname=self.id(), timestamp=time.time())
-                self._drivers[0].save_screenshot(filename)
+            for driver in self._browsers:
+                if hasattr(driver, 'save_screenshot'):
+                    filename = self._config.screenshot_file_pattern.format(testname=self.id(), timestamp=time.time())
+                    driver.save_screenshot(filename)
         except Exception as e:
             print "BROWSER_FRAMEWORK EXCEPTION: ", e.message
 
@@ -167,30 +185,8 @@ class BrowserTestCase(unittest.TestCase):
     def browser(self):
         retval = Browser(self._config)
         self.addCleanup(retval.close)
-
-    def getBrowser(self, url=None):
-        if len(self._drivers) == 0:
-            return self.getAnotherBrowser(url)
-        if url is not None:
-            self._drivers[0].get(self._config.testing_url + url)
-        return self._drivers[0]
-
-    def getReusableBrowser(self):
-        if self._reusableBrowser is None:
-            self._reusableBrowser = DriverFactory.make(self._config)
-        return self._reusableBrowser
-
-    def getAnotherBrowser(self, url=None):
-        def close(driver):
-            driver.close()
-        driver = DriverFactory.make(self._config)
-        self.addCleanup(close, driver)
-
-        if url is not None:
-            driver.get(self._config.testing_url + url)
-
-        self._drivers.append(driver)
-        return driver
+        self._browsers.append(retval)
+        return retval
 
 
 def onlyIfBrowserIn(*browserNames):
