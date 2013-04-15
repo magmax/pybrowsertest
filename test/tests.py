@@ -4,18 +4,27 @@ import unittest
 from pybrowsertest import *
 
 class AutomationTest(BrowserTestCase):
-    def foo(self):
-        pass
-
     def test_the_title_is_set(self):
         self.assertEquals("Directory listing for /", self.browser.open('').title)
 
     def test_there_are_links(self):
         links = self.browser.open('').find_elements_by_css_selector('a')
-        self.assertTrue(len(links) > 0)
+        self.assertTrue(len(list(links)) > 0)
 
     def test_fail_test(self):
         self.assertEquals("This test should fail", self.browser.open('').title)
+
+
+class AWidgetTest(BrowserTestCase):
+    def test_has_href_attribute(self):
+        link = self.browser.open('').find_elements_by_css_selector('a').next()
+        self.assertIsInstance(link.href, unicode)
+
+
+class BodyWidgetTest(BrowserTestCase):
+    def test_body(self):
+        body = self.browser.open('').find_element_by_tag_name('body')
+        self.assertIsNotNone(body)
 
 
 class SkippingTest(BrowserTestCase):
