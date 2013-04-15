@@ -25,6 +25,8 @@ from ConfigParser import ConfigParser
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 
+from widgets import *
+
 __all__ = [
     'BrowserTestCase',
     'onlyIfBrowserIn', 'onlyIfBrowserNotIn'
