@@ -177,13 +177,13 @@ class BrowserTestCase(unittest.TestCase):
 
     def getReusableBrowser(self):
         if self._reusableBrowser is None:
-            self._reusableBrowser = self._getDriver()
+            self._reusableBrowser = DriverFactory.make(self._config)
         return self._reusableBrowser
 
     def getAnotherBrowser(self, url=None):
         def close(driver):
             driver.close()
-        driver = self._getDriver()
+        driver = DriverFactory.make(self._config)
         self.addCleanup(close, driver)
 
         if url is not None:
@@ -191,9 +191,6 @@ class BrowserTestCase(unittest.TestCase):
 
         self._drivers.append(driver)
         return driver
-
-    def _getDriver(self):
-        return DriverFactory.make(self._config)
 
 
 def onlyIfBrowserIn(*browserNames):
