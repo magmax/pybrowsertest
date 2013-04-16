@@ -3,6 +3,9 @@
 import unittest
 from pybrowsertest import *
 
+EXAMPLE1 = '/test/html/example1.html'
+
+
 class AutomationTest(BrowserTestCase):
     def test_the_title_is_set(self):
         self.assertEquals("Directory listing for /", self.browser.open('').title)
@@ -17,13 +20,22 @@ class AutomationTest(BrowserTestCase):
 
 class AWidgetTest(BrowserTestCase):
     def test_has_href_attribute(self):
-        link = self.browser.open('').find_elements_by_css_selector('a').next()
+        link = self.browser.open(EXAMPLE1).find_elements_by_css_selector('a').next()
         self.assertIsInstance(link.href, unicode)
+        self.assertTrue(link.href.endswith('/link1'))
+        self.assertEquals('_blank', link.target)
+        self.assertEquals('This is a link', link.title)
+
+
+class PWidgetTest(BrowserTestCase):
+    def test_paragraph(self):
+        par = self.browser.open(EXAMPLE1).find_elements_by_css_selector('p').next()
+        self.assertIsNotNone(par)
 
 
 class BodyWidgetTest(BrowserTestCase):
     def test_body(self):
-        body = self.browser.open('').find_element_by_tag_name('body')
+        body = self.browser.open(EXAMPLE1).find_element_by_tag_name('body')
         self.assertIsNotNone(body)
 
 

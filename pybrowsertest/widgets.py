@@ -18,25 +18,32 @@ class Widget(Container):
     def __init__(self, driver, element):
         Container.__init__(self, driver)
         self._element = element
-
-
-class BodyWidget(Widget): pass
-
+        self.get_attribute = self._element.get_attribute
 
 class AWidget(Widget):
     @property
     def href(self):
-        return self._element.get_attribute('href')
+        return self.get_attribute('href')
+
+    @property
+    def target(self):
+        return self.get_attribute('target')
+
+    @property
+    def title(self):
+        return self.get_attribute('title')
 
 
 class ElementFactory(object):
     ELEMENTS = {
         'a': AWidget,
-        'body': BodyWidget,
         }
     @classmethod
     def make(cls, driver, element):
-        return cls.ELEMENTS[element.tag_name](driver, element)
+        if element.tag_name in cls.ELEMENTS:
+            return cls.ELEMENTS[element.tag_name](driver, element)
+        return Widget(driver, element)
+
 
 class Page(Container):
     def __init__(self, driver, url):
