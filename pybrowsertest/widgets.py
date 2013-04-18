@@ -49,6 +49,8 @@ class Widget(Container):
         self.text = self._element.text
         self.size = self._element.size
         self.get_attribute = self._element.get_attribute
+        self.tag_name = self._element.tag_name
+        self.location = self._element.location
 
         # booleans
         self.is_displayed = self._element.is_displayed
@@ -59,6 +61,7 @@ class Widget(Container):
 
         # other
         self.__str__ = self._element.__str__
+
 
 class AWidget(Widget):
     @property
@@ -86,6 +89,12 @@ class InputWidget(Widget):
     def clear(self):
         self._element.clear()
 
+    def is_selected(self):
+        return self._element.is_selected()
+
+    def send_keys(self):
+        return self._element.send_keys()
+
 
 class TextareaWidget(Widget):
     @property
@@ -98,6 +107,9 @@ class TextareaWidget(Widget):
 
     def clear(self):
         self._element.clear()
+
+    def send_keys(self):
+        return self._element.send_keys()
 
 
 class ElementFactory(object):
