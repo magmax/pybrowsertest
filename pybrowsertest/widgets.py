@@ -30,9 +30,15 @@ class Container(object):
         self.find_element_by_class_name = partial(self._find_element, self._driver.find_element_by_class_name)
         self.find_elements_by_class_name = partial(self._find_elements, self._driver.find_elements_by_class_name)
 
-    def _find_element(self, function, selector):
-        element = function(selector)
-        return ElementFactory.make(self._driver, element) if element else None
+    def _find_element(self, function, selector, timeout=None):
+        try:
+            if timeout:
+                self._driver.implicitly_wait(timeout)
+            element = function(selector)
+            return ElementFactory.make(self._driver, element) if element else None
+        finally:
+            if timeout:
+                self._driver.implicitly_wait(0)
 
     def _find_elements(self, function, selector):
         for element in function(selector):
@@ -112,11 +118,25 @@ class TextareaWidget(Widget):
         return self._element.send_keys()
 
 
+class FormWidget(Widget):
+    @property
+    def method(self):
+        return self.get_attribute('method')
+
+    @property
+    def action(self):
+        return self.get_attribute('action')
+
+    def submit(self):
+        return self._element.submit()
+
+
 class ElementFactory(object):
     ELEMENTS = {
         'a': AWidget,
         'input': InputWidget,
         'textarea': TextareaWidget,
+        'form': FormWidget,
         }
     @classmethod
     def make(cls, driver, element):
@@ -129,6 +149,9 @@ class Page(Container):
     def __init__(self, driver, url):
         Container.__init__(self, driver)
         self._url = url
+        self.get_screenshot_as_file = self._driver.get_screenshot_as_file
+        self.get_screenshot_as_base64 = self._driver.get_screenshot_as_base64
+        self.current_url = self._driver.current_url
 
     @property
     def title(self):

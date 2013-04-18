@@ -124,8 +124,16 @@ class DriverFactory(object):
 class Browser(object):
     def __init__(self, config):
         self._config = config
-        self._driver = None
         self._driver = DriverFactory.make(config)
+        self.back = self._driver.back
+        self.forward = self._driver.forward
+        self.refresh = self._driver.refresh
+
+        self.add_cookie = self._driver.add_cookie
+        self.get_cookies = self._driver.get_cookies
+        self.get_cookie = self._driver.get_cookie
+        self.delete_cookie = self._driver.delete_cookie
+        self.delete_all_cookies = self._driver.delete_all_cookies
 
     def __del__(self):
         self.close()
