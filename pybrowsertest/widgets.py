@@ -55,9 +55,35 @@ class AWidget(Widget):
         return self.get_attribute('target')
 
 
+class InputWidget(Widget):
+    @property
+    def type(self):
+        return self.get_attribute('type')
+
+    @property
+    def value(self):
+        return self.get_attribute('value')
+
+    @property
+    def placeholder(self):
+        return self.get_attribute('placeholder')
+
+
+class TextareaWidget(Widget):
+    @property
+    def rows(self):
+        return self.get_attribute('rows')
+
+    @property
+    def placeholder(self):
+        return self.get_attribute('placeholder')
+
+
 class ElementFactory(object):
     ELEMENTS = {
         'a': AWidget,
+        'input': InputWidget,
+        'textarea': TextareaWidget,
         }
     @classmethod
     def make(cls, driver, element):
