@@ -24,7 +24,6 @@ class AWidgetTest(BrowserTestCase):
         self.assertIsInstance(link.href, unicode)
         self.assertTrue(link.href.endswith('/link1'))
         self.assertEquals('_blank', link.target)
-        self.assertEquals('This is a link', link.title)
 
 
 class PWidgetTest(BrowserTestCase):
