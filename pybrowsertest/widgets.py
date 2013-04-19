@@ -104,6 +104,10 @@ class InputWidget(Widget):
 
 class TextareaWidget(Widget):
     @property
+    def value(self):
+        return self.get_attribute('value')
+
+    @property
     def rows(self):
         return self.get_attribute('rows')
 

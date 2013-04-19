@@ -29,6 +29,7 @@ from widgets import *
 
 __all__ = [
     'BrowserTestCase',
+    'BrowserConfiguration',
     'onlyIfBrowserIn', 'onlyIfBrowserNotIn'
     ]
 
@@ -50,6 +51,8 @@ class BrowserConfiguration(object):
     OPTION_SCREENSHOT_PATTERN = 'screenshot_file_pattern'
     OPTION_BROWSER_NAME = 'browserName'
     OPTION_JAVASCRIPT = 'javascriptEnabled'
+
+    default_configuration_files = ['/etc/browsertest.cfg', '.browsertest.cfg', 'browsertest.cfg']
 
     default_selenium_url = 'http://localhost:4444/wd/hub'
     default_selenium_mode = 'remote'
@@ -73,7 +76,9 @@ class BrowserConfiguration(object):
         self._config.set(self.SECTION_DESIRED, self.OPTION_JAVASCRIPT, self.default_javascript)
 
     def loadDefaultFiles(self):
-        self.load(['/etc/browsertest.cfg', '.browsertest.cfg', 'browsertest.cfg'])
+        defaults = self.default_configuration_files
+        files = defaults if isinstance(defaults, array) else [defaults]
+        self.load(files)
 
     def load(self, filelist):
         for filename in filelist:
