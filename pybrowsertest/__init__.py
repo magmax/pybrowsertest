@@ -77,7 +77,7 @@ class BrowserConfiguration(object):
 
     def loadDefaultFiles(self):
         defaults = self.default_configuration_files
-        files = defaults if isinstance(defaults, array) else [defaults]
+        files = defaults if isinstance(defaults, list) else [defaults]
         self.load(files)
 
     def load(self, filelist):

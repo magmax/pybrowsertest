@@ -32,10 +32,12 @@ class PWidgetTest(BrowserTestCase):
         self.assertIsNotNone(par)
 
 
-class BodyWidgetTest(BrowserTestCase):
-    def test_body(self):
-        body = self.browser.open(EXAMPLE1).find_element_by_tag_name('body')
-        self.assertIsNotNone(body)
+class RetrievingWidgetsTest(BrowserTestCase):
+    def test_retrieving(self):
+        page = self.browser.open(EXAMPLE1)
+        page.find_element('btn-create').click()
+        item = page.find_element('created', timeout=5000)
+        self.assertIsNotNone(item)
 
 
 class SkippingTest(BrowserTestCase):

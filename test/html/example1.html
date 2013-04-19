@@ -1,4 +1,16 @@
 <html>
+	<head>
+		<script type="text/javascript">
+				function create() {
+					var li_list = document.getElementsByTagName('li');
+					var li = li_list[li_list.length - 1];
+					var e = document.createElement('li');
+					e.setAttribute('id', 'created');
+					e.textContent = "This item has been constructed!";
+					li.appendChild(e);
+				}
+		</script>
+	</head>
   <body>
 		<p>Paragraph 1</p>
 		<p>Paragraph 2</p>
@@ -10,5 +22,6 @@
 				<li><a href="/link1" target="_blank" title="This is a link">link 1</a></li>
 			</ul>
 		</p>
+		<button id="btn-create" onClick="return create();">Create</button>
 	</body>
 </html>
