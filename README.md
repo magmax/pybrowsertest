@@ -119,6 +119,7 @@ Objects have been made as simple and expected as possible. So, you can access th
 ### page
 
 - `get_screenshot_as_file(filename)`: stores a PNG screenshot in the file _filename_.
+- `find_element(id)`: retrieve the element with the id "_id_". It should be only one.
 - `find_element_by_css_selector(selector)`: retrieve the first element that matches the _selector_.
 - `find_elements_by_css_selector(selector)`: retrieve all the elements that match the _selector_.
 - `find_element_by_xpath(selector)`: retrieve the first element that matches the _selector_.

@@ -21,6 +21,7 @@ from functools import partial
 class Container(object):
     def __init__(self, driver):
         self._driver = driver
+        self.find_element = partial(self._find_element, self._driver.find_element)
         self.find_element_by_css_selector = partial(self._find_element, self._driver.find_element_by_css_selector)
         self.find_elements_by_css_selector = partial(self._find_elements, self._driver.find_elements_by_css_selector)
         self.find_element_by_xpath = partial(self._find_element, self._driver.find_element_by_xpath)
