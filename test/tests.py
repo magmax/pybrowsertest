@@ -62,6 +62,14 @@ class FormUsageTest(BrowserTestCase):
 
         self.assertEqual('', textitem.value)
 
+    def test_item_can_be_written(self):
+        text = 'The world is a vampire, send to drain'
+        textitem = self.page.find_element('text-item')
+        textitem.clear()
+        textitem.send_keys(text)
+
+        self.assertEqual(text, textitem.value)
+
 
 class SkippingTest(BrowserTestCase):
     def foo(self):
