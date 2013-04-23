@@ -99,8 +99,8 @@ class InputWidget(Widget):
     def is_selected(self):
         return self._element.is_selected()
 
-    def send_keys(self):
-        return self._element.send_keys()
+    def send_keys(self, keys):
+        return self._element.send_keys(keys)
 
 
 class TextareaWidget(Widget):

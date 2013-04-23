@@ -4,6 +4,7 @@ import unittest
 from pybrowsertest import *
 
 EXAMPLE1 = '/test/html/example1.html'
+EXAMPLE_FORMS = '/test/html/example_forms.html'
 
 
 class AutomationTest(BrowserTestCase):
@@ -33,11 +34,33 @@ class PWidgetTest(BrowserTestCase):
 
 
 class RetrievingWidgetsTest(BrowserTestCase):
-    def test_retrieving(self):
+    def test_inmediate(self):
+        page = self.browser.open(EXAMPLE1)
+        page.find_element('btn-create').click()
+        with self.assertRaises(Exception):
+            item = page.find_element('created')
+
+    def test_retrieving_after_a_timeout(self):
         page = self.browser.open(EXAMPLE1)
         page.find_element('btn-create').click()
         item = page.find_element('created', timeout=5000)
         self.assertIsNotNone(item)
+
+
+class FormUsageTest(BrowserTestCase):
+    def setUp(self):
+        self.page = self.browser.open(EXAMPLE_FORMS)
+
+    def test_form_item(self):
+        form = self.page.find_element_by_tag_name('form')
+        self.assertEqual('get', form.method)
+        self.assertIn('the_action', form.action)
+
+    def test_item_can_be_cleared(self):
+        textitem = self.page.find_element('text-item')
+        textitem.clear()
+
+        self.assertEqual('', textitem.value)
 
 
 class SkippingTest(BrowserTestCase):
