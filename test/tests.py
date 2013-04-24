@@ -76,6 +76,13 @@ class FormUsageTest(BrowserTestCase):
 
         self.assertEqual('', textitem.value)
 
+    def test_textarea_value_can_be_set(self):
+        textitem = self.page.find_element_by_tag_name('textarea')
+        textitem.value = "Text 1"
+        textitem.value = "Text 2"
+
+        self.assertEqual('Text 2', textitem.value)
+
 
 class SkippingTest(BrowserTestCase):
     def foo(self):

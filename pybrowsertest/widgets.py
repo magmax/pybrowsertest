@@ -89,12 +89,19 @@ class InputWidget(Widget):
     def value(self):
         return self.get_attribute('value')
 
+    @value.setter
+    def value(self, value):
+        self._element.clear()
+        self._element.send_keys(value)
+        return self._element
+
     @property
     def placeholder(self):
         return self.get_attribute('placeholder')
 
     def clear(self):
         self._element.clear()
+        return self._element
 
     def is_selected(self):
         return self._element.is_selected()
@@ -108,6 +115,12 @@ class TextareaWidget(Widget):
     def value(self):
         return self.get_attribute('value')
 
+    @value.setter
+    def value(self, value):
+        self._element.clear()
+        self._element.send_keys(value)
+        return self._element
+
     @property
     def rows(self):
         return self.get_attribute('rows')
@@ -118,9 +131,10 @@ class TextareaWidget(Widget):
 
     def clear(self):
         self._element.clear()
+        return self._element
 
-    def send_keys(self):
-        return self._element.send_keys()
+    def send_keys(self, keys):
+        return self._element.send_keys(keys)
 
 
 class FormWidget(Widget):
