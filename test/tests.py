@@ -70,6 +70,12 @@ class FormUsageTest(BrowserTestCase):
 
         self.assertEqual(text, textitem.value)
 
+    def test_textarea_can_be_cleared(self):
+        textitem = self.page.find_element_by_tag_name('textarea')
+        textitem.clear()
+
+        self.assertEqual('', textitem.value)
+
 
 class SkippingTest(BrowserTestCase):
     def foo(self):
