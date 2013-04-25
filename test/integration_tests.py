@@ -16,8 +16,8 @@ selenium_mode = ${selenium_mode}
 selenium_url = http://localhost:4444/wd/hub
 
 [desired capabilities]
-browserName = ${browser}
-javascriptEnabled = True
+browser_name = ${browser}
+javascript_enabled = True
 """
 
 
