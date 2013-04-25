@@ -37,8 +37,8 @@ instance. It uses this driver to load a page and make the checks.
 
 What makes this small framework so special?
 
-- It is quite small.
 - If one of your tests fails, **it will make a screenshot** from the last screen as additional data for debugging.
+- You can set a timeout for any element to appear.
 - It do not overwrite the methods `setUp` or `tearDown`, so it is safe for your current tests.
 - It uses a new browser instance for each test. This is slow, but is the safer way to ensure you have a clean environment (no cookies, sessions or whatever).
 - It reads the configuration from a file, what allows you to modify the file and run the tests again with another browser. You can change the configuration file or even set the configuration from your tests.

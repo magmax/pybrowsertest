@@ -21,7 +21,7 @@ from functools import partial
 class Container(object):
     def __init__(self, driver):
         self._driver = driver
-        self.find_element = partial(self._find_element, self._driver.find_element)
+        self.find_element = partial(self._find_element, self._driver.find_element_by_id)
         self.find_element_by_css_selector = partial(self._find_element, self._driver.find_element_by_css_selector)
         self.find_elements_by_css_selector = partial(self._find_elements, self._driver.find_elements_by_css_selector)
         self.find_element_by_xpath = partial(self._find_element, self._driver.find_element_by_xpath)
@@ -89,24 +89,37 @@ class InputWidget(Widget):
     def value(self):
         return self.get_attribute('value')
 
+    @value.setter
+    def value(self, value):
+        self._element.clear()
+        self._element.send_keys(value)
+        return self._element
+
     @property
     def placeholder(self):
         return self.get_attribute('placeholder')
 
     def clear(self):
         self._element.clear()
+        return self._element
 
     def is_selected(self):
         return self._element.is_selected()
 
-    def send_keys(self):
-        return self._element.send_keys()
+    def send_keys(self, keys):
+        return self._element.send_keys(keys)
 
 
 class TextareaWidget(Widget):
     @property
     def value(self):
         return self.get_attribute('value')
+
+    @value.setter
+    def value(self, value):
+        self._element.clear()
+        self._element.send_keys(value)
+        return self._element
 
     @property
     def rows(self):
@@ -118,9 +131,10 @@ class TextareaWidget(Widget):
 
     def clear(self):
         self._element.clear()
+        return self._element
 
-    def send_keys(self):
-        return self._element.send_keys()
+    def send_keys(self, keys):
+        return self._element.send_keys(keys)
 
 
 class FormWidget(Widget):
