@@ -49,8 +49,8 @@ class BrowserConfiguration(object):
     OPTION_SELENIUM_URL = 'selenium_url'
     OPTION_TESTING_URL = 'testing_url'
     OPTION_SCREENSHOT_PATTERN = 'screenshot_file_pattern'
-    OPTION_BROWSER_NAME = 'browserName'
-    OPTION_JAVASCRIPT = 'javascriptEnabled'
+    OPTION_BROWSER_NAME = 'browser_name'
+    OPTION_JAVASCRIPT = 'javascript_enabled'
 
     default_configuration_files = ['/etc/browsertest.cfg', '.browsertest.cfg', 'browsertest.cfg']
 
@@ -188,14 +188,14 @@ class BrowserTestCase(unittest.TestCase):
         return retval
 
 
-def onlyIfBrowserIn(*browserNames):
+def onlyIfBrowserIn(*browser_names):
     config = BrowserConfiguration()
     config.loadDefaultFiles()
     message = 'The test has been skipped for browser: {}'
-    return unittest.skipIf(config.browser_name not in browserNames, message.format(browserNames))
+    return unittest.skipIf(config.browser_name not in browser_names, message.format(browser_names))
 
-def onlyIfBrowserNotIn(*browserNames):
+def onlyIfBrowserNotIn(*browser_names):
     config = BrowserConfiguration()
     config.loadDefaultFiles()
     message = 'Current browser {} does not match any required browser for this test: {}'
-    return unittest.skipIf(config.browser_name in browserNames, message.format(config.browser_name, browserNames))
+    return unittest.skipIf(config.browser_name in browser_names, message.format(config.browser_name, browser_names))
