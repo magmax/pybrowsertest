@@ -15,9 +15,6 @@ class AutomationTest(BrowserTestCase):
         links = self.browser.open('').find_elements_by_css_selector('a')
         self.assertTrue(len(list(links)) > 0)
 
-    def test_fail_test(self):
-        self.assertEquals("This test should fail", self.browser.open('').title)
-
 
 class AWidgetTest(BrowserTestCase):
     def test_has_href_attribute(self):
