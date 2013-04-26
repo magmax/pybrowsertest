@@ -38,11 +38,11 @@ selenium_url = http://localhost:4444/wd/hub
 ## In this section you can add whatever capabilities you desire. If
 ## they are available in the driver you choose, they will be used.
 
-## There are some common capabilities, like "browser_name" and
-## "javascript_enabled". Check the Selenium documentation to see all of
-## them.
+## There are some common capabilities, like "browserName" and
+## "javascriptEnabled". Check the Selenium documentation to see all of
+## them, because they depend on the selected driver.
 ## Defaults:
-##   browser_name = firefox
-##   javascript_enabled = True
-browser_name = firefox
-javascript_enabled = True
+##   browserName = firefox
+##   javascriptEnabled = True
+browserName = firefox
+javascriptEnabled = True
