@@ -49,8 +49,8 @@ class BrowserConfiguration(object):
     OPTION_SELENIUM_URL = 'selenium_url'
     OPTION_TESTING_URL = 'testing_url'
     OPTION_SCREENSHOT_PATTERN = 'screenshot_file_pattern'
-    OPTION_BROWSER_NAME = 'browser_name'
-    OPTION_JAVASCRIPT = 'javascript_enabled'
+    OPTION_BROWSER_NAME = 'browserName'
+    OPTION_JAVASCRIPT = 'javascriptEnabled'
 
     default_configuration_files = ['/etc/browsertest.cfg', '.browsertest.cfg', 'browsertest.cfg']
 
@@ -108,8 +108,8 @@ class BrowserConfiguration(object):
     @property
     def desired_capabilities(self):
         desired = {}
-        for option in self._config.options(self.SECTION_DESIRED):
-            desired[option] = self._config.get(self.SECTION_DESIRED, option)
+        for option, value in self._config.items(self.SECTION_DESIRED):
+            desired[option] = value
         return desired
 
 
@@ -123,7 +123,10 @@ class DriverFactory(object):
             'firefox': webdriver.Firefox,
             'chrome': webdriver.Chrome
             }
-        return drivers[config.selenium_mode]()
+        mode = drivers.get(config.selenium_mode, None)
+        if mode is None:
+            raise Exception("Invalid mode")
+        return mode()
 
 
 class Browser(object):
