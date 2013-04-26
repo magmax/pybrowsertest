@@ -19,37 +19,38 @@
 from functools import partial
 
 class Container(object):
-    def __init__(self, driver):
+    def __init__(self, driver, element):
         self._driver = driver
-        self.find_element = partial(self._find_element, self._driver.find_element_by_id)
-        self.find_element_by_css_selector = partial(self._find_element, self._driver.find_element_by_css_selector)
-        self.find_elements_by_css_selector = partial(self._find_elements, self._driver.find_elements_by_css_selector)
-        self.find_element_by_xpath = partial(self._find_element, self._driver.find_element_by_xpath)
-        self.find_elements_by_xpath = partial(self._find_elements, self._driver.find_elements_by_xpath)
-        self.find_element_by_tag_name = partial(self._find_element, self._driver.find_element_by_tag_name)
-        self.find_elements_by_tag_name = partial(self._find_elements, self._driver.find_elements_by_tag_name)
-        self.find_element_by_class_name = partial(self._find_element, self._driver.find_element_by_class_name)
-        self.find_elements_by_class_name = partial(self._find_elements, self._driver.find_elements_by_class_name)
+        self._element = element
+
+        self.find_element = partial(self._find_element, self._element.find_element_by_id)
+        self.find_element_by_css_selector = partial(self._find_element, self._element.find_element_by_css_selector)
+        self.find_elements_by_css_selector = partial(self._find_elements, self._element.find_elements_by_css_selector)
+        self.find_element_by_xpath = partial(self._find_element, self._element.find_element_by_xpath)
+        self.find_elements_by_xpath = partial(self._find_elements, self._element.find_elements_by_xpath)
+        self.find_element_by_tag_name = partial(self._find_element, self._element.find_element_by_tag_name)
+        self.find_elements_by_tag_name = partial(self._find_elements, self._element.find_elements_by_tag_name)
+        self.find_element_by_class_name = partial(self._find_element, self._element.find_element_by_class_name)
+        self.find_elements_by_class_name = partial(self._find_elements, self._element.find_elements_by_class_name)
 
     def _find_element(self, function, selector, timeout=None):
         try:
             if timeout:
-                self._driver.implicitly_wait(timeout)
+                self._element.implicitly_wait(timeout)
             element = function(selector)
-            return ElementFactory.make(self._driver, element) if element else None
+            return ElementFactory.make(self._element, element) if element else None
         finally:
             if timeout:
-                self._driver.implicitly_wait(0)
+                self._element.implicitly_wait(0)
 
     def _find_elements(self, function, selector):
         for element in function(selector):
-            yield ElementFactory.make(self._driver, element)
+            yield ElementFactory.make(self._element, element)
 
 
 class Widget(Container):
     def __init__(self, driver, element):
-        Container.__init__(self, driver)
-        self._element = element
+        Container.__init__(self, driver, element)
 
         # properties
         self.id = self._element.id
@@ -166,7 +167,7 @@ class ElementFactory(object):
 
 class Page(Container):
     def __init__(self, driver, url):
-        Container.__init__(self, driver)
+        Container.__init__(self, driver, driver)
         self._url = url
         self.get_screenshot_as_file = self._driver.get_screenshot_as_file
         self.get_screenshot_as_base64 = self._driver.get_screenshot_as_base64

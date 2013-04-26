@@ -31,17 +31,23 @@ class PWidgetTest(BrowserTestCase):
 
 
 class RetrievingWidgetsTest(BrowserTestCase):
+    def setUp(self):
+        self.page = self.browser.open(EXAMPLE1)
     def test_inmediate(self):
-        page = self.browser.open(EXAMPLE1)
-        page.find_element('btn-create').click()
+        self.page.find_element('btn-create').click()
         with self.assertRaises(Exception):
-            item = page.find_element('created')
+            item = self.page.find_element('created')
 
     def test_retrieving_after_a_timeout(self):
-        page = self.browser.open(EXAMPLE1)
-        page.find_element('btn-create').click()
-        item = page.find_element('created', timeout=5000)
+        self.page.find_element('btn-create').click()
+        item = self.page.find_element('created', timeout=5000)
         self.assertIsNotNone(item)
+
+    def test_can_find_an_item_inside_another(self):
+        ul = self.page.find_element_by_css_selector('ul')
+        li_list = list(ul.find_elements_by_css_selector('li'))
+        self.assertEqual('item 1', li_list[0].text)
+        self.assertEqual('item 2', li_list[1].text)
 
 
 class FormUsageTest(BrowserTestCase):
