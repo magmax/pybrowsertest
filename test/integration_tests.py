@@ -30,13 +30,17 @@ def write_config_file(mode, browser=None):
 
 firefox_skips = [
     'test_skip_test (tests.SkippingTest) ... SKIP',
-    'test_skipif_browser_is_firefox (tests.SkippingTest) ... SKIP',
-    'test_skipifnot_foo (tests.SkippingTest) ... SKIP']
+    "test_onlyifbrowserin_firefox (tests.SkippingTest) ... ok",
+    'test_onlyifbrowserin_foo (tests.SkippingTest) ... SKIP',
+    'test_onlyifbrowsernotin_firefox (tests.SkippingTest) ... SKIP',
+    ]
 
 chrome_skips = [
     "test_skip_test (tests.SkippingTest) ... SKIP",
-    "test_skipifnot_browser_is_not_firefox (tests.SkippingTest) ... SKIP",
-    "test_skipifnot_foo (tests.SkippingTest) ... SKIP"]
+    "test_onlyifbrowserin_firefox (tests.SkippingTest) ... SKIP",
+    "test_onlyifbrowserin_foo (tests.SkippingTest) ... SKIP",
+    'test_onlyifbrowsernotin_firefox (tests.SkippingTest) ... ok',
+    ]
 
 
 class Tests(TestCase):
@@ -70,6 +74,11 @@ class Tests(TestCase):
     def test_local_firefox(self):
         tester = self.run_with_config('firefox')
         self.assert_skips(tester, firefox_skips)
+
+    def test_remote_chrome(self):
+        self.start_selenium_server()
+        tester = self.run_with_config('remote', 'chrome')
+        self.assert_skips(tester, chrome_skips)
 
     def test_remote_firefox(self):
         self.start_selenium_server()

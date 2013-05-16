@@ -95,13 +95,13 @@ class SkippingTest(BrowserTestCase):
         self.fail("This test should not be executed")
 
     @onlyIfBrowserIn("firefox")
-    def test_skipifnot_browser_is_not_firefox(self):
+    def test_onlyifbrowserin_firefox(self):
         pass
 
     @onlyIfBrowserIn("invalid browser")
-    def test_skipifnot_foo(self):
+    def test_onlyifbrowserin_foo(self):
         self.fail("This test should not be executed")
 
     @onlyIfBrowserNotIn("firefox")
-    def test_skipif_browser_is_firefox(self):
+    def test_onlyifbrowsernotin_firefox(self):
         pass
