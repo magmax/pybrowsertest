@@ -142,6 +142,8 @@ class Browser(object):
         self.get_cookie = self._driver.get_cookie
         self.delete_cookie = self._driver.delete_cookie
         self.delete_all_cookies = self._driver.delete_all_cookies
+        if getattr(self._driver, 'save_screenshot'):
+            self.save_screenshot = self._driver.save_screenshot
 
     def __del__(self):
         self.close()
@@ -182,11 +184,17 @@ class BrowserTestCase(unittest.TestCase):
                     driver.save_screenshot(filename)
         except Exception as e:
             print "BROWSER_FRAMEWORK EXCEPTION: ", e.message
+            print e
 
     @property
     def browser(self):
+        def clear(what):
+            what.close()
+            self._browsers.remove(what)
+        if len(self._browsers) == 1:
+            return self._browsers[0]
         retval = Browser(self._config)
-        self.addCleanup(retval.close)
+        self.addCleanup(clear, retval)
         self._browsers.append(retval)
         return retval
 

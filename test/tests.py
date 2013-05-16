@@ -8,12 +8,11 @@ EXAMPLE_FORMS = '/test/html/example_forms.html'
 
 
 class AutomationTest(BrowserTestCase):
-    def test_the_title_is_set(self):
-        self.assertEquals("Directory listing for /", self.browser.open('').title)
+    def test_page_is_retrieved(self):
+        page = self.browser.open('')
 
-    def test_there_are_links(self):
-        links = self.browser.open('').find_elements_by_css_selector('a')
-        self.assertTrue(len(list(links)) > 0)
+        self.assertEquals("Directory listing for /", page.title)
+        self.assertTrue(len(list(page.find_elements_by_css_selector('a'))) > 0)
 
 
 class AWidgetTest(BrowserTestCase):
