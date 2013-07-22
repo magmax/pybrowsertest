@@ -6,3 +6,6 @@
 *.jar
 browsertest.cfg
 chromedriver
+*.egg/
+*.egg-info/
+dist/
