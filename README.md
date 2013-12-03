@@ -12,6 +12,8 @@ safe.
 It requires python-selenium to work properly, since it is only a
 wrapper for it.
 
+Current status: [<img src="https://travis-ci.org/magmax/pybrowsertest.png">](https://travis-ci.org/magmax/pybrowsertest#)
+
 ## An example ##
 
 Lets start with a full example:
