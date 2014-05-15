@@ -3,7 +3,8 @@
 
 import os
 from setuptools import setup, Command
-from pybrowsertest import __version__
+#from pybrowsertest import __version__
+__version__ = '0.0.5'
 
 
 def read(filename):

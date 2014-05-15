@@ -27,7 +27,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 from widgets import *
 
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 
 __all__ = [
     'BrowserTestCase',
