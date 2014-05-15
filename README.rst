@@ -284,6 +284,8 @@ Remember: the ``./run_tests.py`` script is not useful for your own tests; only i
     :alt: Number of PyPI downloads
 
 
+.. _Travis: https://travis-ci.org/magmax/pybrowsertest
+.. _Coveralls: https://coveralls.io/r/magmax/pybrowsertest
 .. _unittest.main: http://docs.python.org/2/library/unittest.html#basic-example
 .. _nosetests: https://nose.readthedocs.org/en/latest/
 .. _zope.testrunner: https://pypi.python.org/pypi/zope.testrunner
