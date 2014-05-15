@@ -13,7 +13,11 @@ safe.
 It requires python-selenium to work properly, since it is only a
 wrapper for it.
 
-Current status: [<img src="https://travis-ci.org/magmax/pybrowsertest.png">](https://travis-ci.org/magmax/pybrowsertest#)
+==============  ===============  =========  ============
+VERSION         DOWNLOADS        TESTS      COVERAGE
+==============  ===============  =========  ============
+|pip version|   |pip downloads|  |travis|   |coveralls|
+==============  ===============  =========  ============
 
 An example
 ----------
@@ -75,8 +79,8 @@ Example:
     def test_example(self):
         pass
 
-onlyIfBrowserNotIn
-//////////////////
+:code:`onlyIfBrowserNotIn`
+//////////////////////////
 
 
 The opposite to :code:`onlyIfBrowserIn`, only will execute the test if you
@@ -252,6 +256,23 @@ Our own runner
 In order to test this framework, it has been necessary to build our own runner. It was necessary to catch the skipped tests, to check if they were really skipped; to catch the failed tests, to check if they were really failing, and so on. So you need to run the ``./run_tests.py`` script in order to test the own pybrowsertest library.
 
 Remember: the ``./run_tests.py`` script is not useful for your own tests; only in this library.
+
+
+.. |travis| image:: https://travis-ci.org/magmax/pybrowsertest.png
+  :target: `Travis`_
+  :alt: Travis results
+
+.. |coveralls| image:: https://coveralls.io/repos/magmax/pybrowsertest/badge.png
+  :target: `Coveralls`_
+  :alt: Coveralls results_
+
+.. |pip version| image:: https://pypip.in/v/pybrowsertest/badge.png
+    :target: https://pypi.python.org/pypi/pybrowsertest
+    :alt: Latest PyPI version
+
+.. |pip downloads| image:: https://pypip.in/d/pybrowsertest/badge.png
+    :target: https://pypi.python.org/pypi/pybrowsertest
+    :alt: Number of PyPI downloads
 
 
 .. _unittest.main: http://docs.python.org/2/library/unittest.html#basic-example
