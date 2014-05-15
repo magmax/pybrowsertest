@@ -1,3 +1,10 @@
+==============  ===============  =========  ============
+VERSION         DOWNLOADS        TESTS      COVERAGE
+==============  ===============  =========  ============
+|pip version|   |pip downloads|  |travis|   |coveralls|
+==============  ===============  =========  ============
+
+
 PyBrowserTest
 =============
 
@@ -13,14 +20,16 @@ safe.
 It requires python-selenium to work properly, since it is only a
 wrapper for it.
 
-==============  ===============  =========  ============
-VERSION         DOWNLOADS        TESTS      COVERAGE
-==============  ===============  =========  ============
-|pip version|   |pip downloads|  |travis|   |coveralls|
-==============  ===============  =========  ============
+Installation
+============
+
+Just::
+
+    pip install pybrowsertest
+
 
 An example
-----------
+==========
 
 Lets start with a full example:
 
@@ -44,7 +53,7 @@ instance. It uses this driver to load a page and make the checks.
 
 
 Features
---------
+========
 
 What makes this small framework so special?
 
