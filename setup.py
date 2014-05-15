@@ -3,13 +3,12 @@
 
 import os
 from setuptools import setup, Command
+from pybrowsertest import __version__
 
-version = '0.0.2'
 
-def read(fname):
-    fullname = os.path.join(os.path.dirname(__file__), fname)
-    with open(fullname) as f:
-        return f.read()
+def read(filename):
+    with open(filename) as fd:
+        return fd.read()
 
 setup(name         = 'pybrowsertest',
       version      = version,
@@ -18,17 +17,23 @@ setup(name         = 'pybrowsertest',
       author       = 'Miguel Ángel García',
       author_email = '<miguelangel.garcia@tuenti.com>',
       license      = 'LGPL',
-      url = "https://github.com/magmax/pybrowsertest",
+      url          = "https://github.com/magmax/pybrowsertest",
       packages     = [
           'pybrowsertest',
           ],
+      package_data = {
+        '': ['*.rst'],
+      },
       classifiers=[
           "Development Status :: 4 - Beta",
           "Topic :: Software Development :: Testing",
           "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
+          'Environment :: Console',
+          'Intended Audience :: Developers',
+          'Topic :: Software Development :: User Interfaces',
+          'Topic :: Software Development :: Libraries :: Application Frameworks',
       ],
-      install_requires=[req.strip()
-                        for req in file('requirements.txt').readlines()
-                        if req and req[0] not in '#-'],
-      setup_requires=['nose>=1.0', 'nose-cov'],
-      )
+      install_requires=[
+          'selenium==2.41.0',
+      ],
+)

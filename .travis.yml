@@ -4,7 +4,12 @@ python:
   - "2.7"
   - "3.2"
   - "3.3"
-# command to install dependencies
-install: "./install.sh"
-# command to run tests
-script: make
+  - "3.4"
+  - "pypy"
+
+install:
+  - pip install -r requirements-dev.txt
+  - python setup.py install
+
+script:
+  - make
