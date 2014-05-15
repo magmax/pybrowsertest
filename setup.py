@@ -11,9 +11,9 @@ def read(filename):
         return fd.read()
 
 setup(name         = 'pybrowsertest',
-      version      = version,
+      version      = __version__,
       description  = 'Facility to use Selenium',
-      long_description = read('README.md'),
+      long_description = read('README.rst'),
       author       = 'Miguel Ángel García',
       author_email = '<miguelangel.garcia@tuenti.com>',
       license      = 'LGPL',
@@ -22,7 +22,7 @@ setup(name         = 'pybrowsertest',
           'pybrowsertest',
           ],
       package_data = {
-        '': ['*.rst'],
+        '': ['*.txt', '*.rst'],
       },
       classifiers=[
           "Development Status :: 4 - Beta",
